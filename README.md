@@ -34,7 +34,7 @@ Engine & Technologies
 
 Geometry Generation
 On the CPU, we procedurally construct a patch of grass:
-  - Blade Count: ~750,000
+  - Blade Count: 500,000
   - Segments per blade: 10 (triangles combined to create one large triangle)
   
 For each blade:
