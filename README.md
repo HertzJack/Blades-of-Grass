@@ -1,7 +1,6 @@
 # Blades-of-Grass
 Real-Time Procedural Grass in Babylon.js
 
-Overview
 Blades of Grass is a real-time procedural grass renderer built with Babylon.js, JavaScript and GLSL.
 Instead of relying on external 3D models or heavy textures, this project generates and animates an entire grass field from scratch using:
 - Custom CPU-side mesh generation
@@ -13,7 +12,7 @@ Goals
 - Create a real-time grass animation without pre-made assets
 - Focus on shader programming and custom mesh generation
 - Simulate natural wind-driven motion in a visually convincing way
-- Keep the implementation efficient enough to handle tens of thousands of blades
+- Keep the implementation efficient enough to handle hundreds of thousands of blades
 
 Key Features
 - Procedural grass generation
@@ -25,8 +24,6 @@ Key Features
 - Gradient-based blade shading
    - A fragment shader applies a color gradient from darker at the base to brighter at the tip
    - This adds depth and realism without relying on complex textures.
-- Density-independent field scaling
-   - Grass density was decoupled from the overall field size so the field looks consistent at different dimensions
  
 Technical Overview
 Engine & Technologies
@@ -37,7 +34,7 @@ Engine & Technologies
 
 Geometry Generation
 On the CPU, we procedurally construct a patch of grass:
-  - Blade Count: ~50,000
+  - Blade Count: ~750,000
   - Segments per blade: 10 (triangles combined to create one large triangle)
   
 For each blade:
@@ -69,6 +66,7 @@ Fragment Shader (Coloring)
     - Apply a vertical color gradient per blade:
       - Darker near the base
       - Brighter and more vibrant near the tip
+   - Apply basic directional lighting so front appears brighter than back
 
 Challenges & Learnings
 Wind Motion
@@ -76,19 +74,15 @@ Wind Motion
     - Early versions felt stiff or as if the blades were jumping around in their animation
     - Adding noise-based variation per position, plus bending that increases toward the tip made the motion appear to be much more natural
 
-Density vs. Field Size
-  Initially, grass density was tightly coupled to the total blade count and patch size:
-    - Increasing the field size without adjusting blade generation logic caused sparse or uneven coverage
-    - We refactored the generation so that density and field dimensions are logically seperate, letting us scale the patch size while keeping a consistent look
 
 Performance Considerations
-  Rendering 50,000 individual meshes is a poor approach:
+  Rendering 750,000 individual meshes is a poor approach:
     - Combining all blades into one mesh with shared buffers was key to maintaining performance
     - Pushing animation to the GPU via shaders avoided CPU-side per-frame updates to vertex data
 
 We ended up with a solution that's both visually convincing and reasonably efficient for real-time rendering in a browser.
 
 Credits & References:
-Team: Ava Ferrentino, Jack Hertz, Helena Servin-DeMarrais, Michael Kobs
+Team: Jack Hertz, Helena Servin-DeMarrais, Michael Kobs, Ava Ferrentino
 GPUOpen - Procedural Grass Rendering: Material used to get the ball rolling on efficient grass rendering techniques.
 Patricio Gonzalez Vivo (GLSL Noise): Used their 2D noise function to assist in the animation of grass blades.
