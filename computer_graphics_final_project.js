@@ -152,7 +152,7 @@ export const createScene = function () {
     });
 
     //building grass geometry over a rectangle patch
-    const bladeCount = 50000;
+    const bladeCount = 750000;
     const segments = 10;
     
     const positions = [];
